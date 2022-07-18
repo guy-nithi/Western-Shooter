@@ -1,5 +1,6 @@
 import pygame, sys
 from settings import * 
+from player import Player
 
 class Game:
 	def __init__(self):
@@ -7,6 +8,14 @@ class Game:
 		self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 		pygame.display.set_caption('Western shooter')
 		self.clock = pygame.time.Clock()
+
+		#  Groups
+		self.all_sprites = pygame.sprite.Group()
+
+		self.setup()
+
+	def setup(self):
+		Player((200,200),self.all_sprites,None,None)
 
 	def run(self):
 		while True:
@@ -16,6 +25,12 @@ class Game:
 					pygame.quit()
 					sys.exit()
 			dt = self.clock.tick() / 1000
+			
+			# Update groups
+			self.all_sprites.update(dt)
+
+			self.display_surface.fill('black')
+			self.all_sprites.draw(self.display_surface)
 
 			pygame.display.update()
 
